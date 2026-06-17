@@ -1,0 +1,5 @@
+Target,R2,RMSE,MAE
+Resultant,0.7959,20.4332,15.4322
+Vertical,0.8146,11.4059,8.4392
+Longitudinal,0.817,11.3278,8.4224
+Transverse,0.819,11.2444,8.3265

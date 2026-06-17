@@ -1,0 +1,9 @@
+Feature,Resultant_rank,Resultant_shap,Vertical_rank,Vertical_shap,Longitudinal_rank,Longitudinal_shap,Transverse_rank,Transverse_shap
+SD,1,24.8497,1,14.0426,1,14.5058,1,10.6292
+Distance,2,8.6581,2,5.037,2,4.9908,2,4.5499
+W²/D,3,3.0596,4,1.5854,3,1.7104,5,1.4547
+log(SD),4,2.775,3,1.6489,4,1.5613,3,3.9018
+Charge,5,1.9945,5,1.0562,5,1.0573,6,1.1205
+log(D),6,1.2339,6,0.6854,6,0.6446,4,1.5618
+log(W),7,0.205,7,0.1397,7,0.2015,7,0.2669
+√W,8,0.0,8,0.0,8,0.0,8,0.0901
