@@ -27,12 +27,15 @@ def load_and_engineer(path: str) -> pd.DataFrame:
     # Dominant component per row
     df['dominant'] = df[['V', 'L', 'T']].idxmax(axis=1)
     
-    # Anomaly flag: any component deviates >30% from resultant
-    df['anomalous'] = (
-        (abs(df['V'] - df['PPV']) / df['PPV'] > 0.09) |
-        (abs(df['L'] - df['PPV']) / df['PPV'] > 0.09) |
-        (abs(df['T'] - df['PPV']) / df['PPV'] > 0.09)
-    ).astype(int)
+    # Directional divergence: how much V/L/T disagree with EACH OTHER
+    # (not with the resultant — a component is ~42% below the resultant by
+    # geometry alone for near-isotropic data, so comparing to PPV was always
+    # going to fire on every row regardless of real divergence)
+    comp = df[['V', 'L', 'T']]
+    df['divergence_pct'] = (comp.max(axis=1) - comp.min(axis=1)) / comp.mean(axis=1)
+    # Data-driven flag: top decile of observed divergence (empirical, not assumed)
+    threshold = df['divergence_pct'].quantile(0.90)
+    df['high_divergence'] = (df['divergence_pct'] > threshold).astype(int)
     
     # SD quartile for stratified split later
     df['sd_quartile'] = pd.qcut(df['SD'], q=4, labels=False)
@@ -44,7 +47,8 @@ if __name__ == "__main__":
     df.to_csv("data/processed.csv", index=False)
     
     print("Shape:", df.shape)
-    print("\nAnomalous rows:", df['anomalous'].sum())
+    print("\nHigh-divergence rows (top decile):", df['high_divergence'].sum())
+    print("Divergence threshold used:", round(df['divergence_pct'].quantile(0.90)*100, 2), "%")
     print("\nDominant component counts:")
     print(df['dominant'].value_counts())
     print("\nComponent ratio stats:")

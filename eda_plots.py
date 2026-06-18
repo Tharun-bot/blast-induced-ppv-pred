@@ -33,13 +33,13 @@ print("Saved fig1")
 fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 
 for ax, (col, name), color in zip(axes.flatten(), targets, colors):
-    normal = df[df['anomalous'] == 0]
-    anom   = df[df['anomalous'] == 1]
+    normal = df[df['high_divergence'] == 0]
+    anom   = df[df['high_divergence'] == 1]
     
     ax.scatter(normal['SD'], normal[col], alpha=0.5, s=25, color=color, label='Normal')
     if len(anom) > 0:
         ax.scatter(anom['SD'], anom[col], alpha=0.9, s=60, color='red', 
-                   marker='*', label='Anomalous', zorder=5)
+                   marker='*', label='High divergence (top 10%)', zorder=5)
     
     # Log-log regression line
     logSD  = np.log10(df['SD'])
